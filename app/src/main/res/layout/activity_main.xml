@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/framelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/bottomBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:layout_margin="30dp"-->
+<!--        android:background="@drawable/bg"-->
+<!--        app:elevation="2dp"-->
+<!--        app:itemIconSize="30dp"-->
+<!--        app:itemIconTint="@drawable/nav_item_selector"-->
+<!--        app:itemRippleColor="@android:color/transparent"-->
+<!--        app:labelVisibilityMode="unlabeled"-->
+<!--        app:menu="@menu/bottom_nav_menu"  />-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.ismaeldivita.chipnavigation.ChipNavigationBar
+            android:id="@+id/bottonnav"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg"
+            app:cnb_menuResource="@menu/bottom_nav_menu"
+            >
+
+        </com.ismaeldivita.chipnavigation.ChipNavigationBar>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
