@@ -30,4 +30,23 @@
     <style name="AppBarLayoutTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorControlHighlight">#FFF</item>
     </style>
+<!--    <style name="bottonsheettheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">-->
+<!--        <item name="bottomSheetStyle"></item>-->
+<!--    </style>-->
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottomsheet_background</item>
+    </style>
+    <style name="backgrounddarklight">
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="textthemedarklight">
+        <item name="android:textColor">@color/colorTextTitle</item>
+    </style>
 </resources>

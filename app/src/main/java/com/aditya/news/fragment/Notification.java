@@ -10,11 +10,15 @@ import android.view.ViewGroup;
 
 import com.aditya.news.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Notification#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Notification extends Fragment {
 
     public Notification() {
@@ -31,6 +35,34 @@ public class Notification extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notification, container, false);
+        String filename="tempdata";
+        View view= inflater.inflate(R.layout.fragment_notification, container, false);
+        File file = new File(getActivity().getFilesDir().getAbsolutePath(),filename);
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuilder stringBuilder = new StringBuilder();
+            String line = bufferedReader.readLine();
+            while (line != null){
+                stringBuilder.append(line).append("\n");
+                line = bufferedReader.readLine();
+            }
+            bufferedReader.close();
+            // This responce will have Json Format String
+            String responce = stringBuilder.toString();
+            try {
+                JSONObject jsonObject  = new JSONObject(responce);
+//                jsonObject.get("title").toString();
+                System.out.println(jsonObject.get("title").toString());
+                System.out.println(jsonObject.get("image").toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return  view;
     }
 }

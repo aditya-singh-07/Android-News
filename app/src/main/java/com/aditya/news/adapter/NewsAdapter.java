@@ -4,16 +4,20 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aditya.news.NewsDetail;
@@ -23,11 +27,23 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.JsonObject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
+
+import javax.security.auth.Subject;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     private List<Article> articles;
@@ -84,8 +100,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 //        }
 //        System.out.println("Date is: "+date);
         holder.time.setText(NewsDetail.DateToTimeFormat(model.getPublishedAt()));
-        holder.published_at.setText(NewsDetail.DateFormat(model.getPublishedAt()));
-        holder.author.setText(model.getAuthor());
+//        holder.published_at.setText(NewsDetail.DateFormat(model.getPublishedAt()));
+//        holder.author.setText(model.getAuthor());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +113,65 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 i.putExtra("image",model.getUrlToImage());
                 i.putExtra("url",model.getUrl());
                 context.startActivity(i);
+            }
+        });
+
+        holder.imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final BottomSheetDialog bottomSheetDialog=new BottomSheetDialog(context,R.style.AppBottomSheetDialogTheme);
+                View bottomsheet=LayoutInflater.from((FragmentActivity)context).inflate(R.layout.bottomsheet,null);
+                bottomsheet.findViewById(R.id.constraintLayoutsave).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("title", model.getSource().getName());
+                            jsonObject.put("headline",model.getTitle());
+                            jsonObject.put("time", NewsDetail.DateToTimeFormat(model.getPublishedAt()));
+                            jsonObject.put("image", model.getUrlToImage());
+                            jsonObject.put("url", model.getUrl());
+                            String userString = jsonObject.toString();
+                            String filename="tempdata";
+                            File file = new File(context.getFilesDir().getAbsolutePath(),filename);
+                            FileWriter fileWriter = new FileWriter(file);
+                            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                            bufferedWriter.write(userString);
+                            bufferedWriter.close();
+                        } catch (JSONException | IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        Toast.makeText(context, "saved sucessfully", Toast.LENGTH_SHORT).show();
+                        bottomSheetDialog.dismiss();
+                    }
+                });
+                bottomsheet.findViewById(R.id.constraintLayoutshare).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String uri=model.getUrl();
+                        Intent intent=new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_SUBJECT,model.getSource().getName() + ':' + '\n');
+                        intent.putExtra(Intent.EXTRA_TEXT, model.getTitle()+ '\n' + uri);
+                        context.startActivity(Intent.createChooser(intent,uri));
+                        Toast.makeText(context, "send sucessfully", Toast.LENGTH_SHORT).show();
+                        bottomSheetDialog.dismiss();
+                    }
+                });
+                bottomsheet.findViewById(R.id.constraintlayoutviewonweb).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(model.getUrl()));
+                        context.startActivity(intent);
+                        Toast.makeText(context, "View on web sucessfully", Toast.LENGTH_SHORT).show();
+                        bottomSheetDialog.dismiss();
+                    }
+                });
+                bottomSheetDialog.setContentView(bottomsheet);
+                bottomSheetDialog.show();
             }
         });
 
@@ -112,13 +187,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         ImageView imageView;
         ProgressBar progressBar;
         CardView cardView;
+        ImageButton imageButton;
         public NewsHolder(@NonNull View itemView) {
             super(itemView);
             cardView=itemView.findViewById(R.id.cardview);
             title = itemView.findViewById(R.id.title);
+            imageButton=itemView.findViewById(R.id.btnbottomsheet);
 //            description = itemView.findViewById(R.id.description);
-            author = itemView.findViewById(R.id.author);
-            published_at = itemView.findViewById(R.id.publishedAt);
+//            author = itemView.findViewById(R.id.author);
+//            published_at = itemView.findViewById(R.id.publishedAt);
             source = itemView.findViewById(R.id.source);
             time = itemView.findViewById(R.id.time);
             imageView = itemView.findViewById(R.id.image);

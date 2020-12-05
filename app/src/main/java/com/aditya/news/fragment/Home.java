@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.aditya.news.api.ApiInterface;
 import com.aditya.news.connection.Checknetwork;
 import com.aditya.news.models.Article;
 import com.aditya.news.models.NewsModel;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,7 @@ public class Home extends Fragment {
      TextView topnews;
      SwipeRefreshLayout swipeRefreshLayout;
      ImageView errorImage;
+     ImageButton imageButton;
      Context context;
      Checknetwork checknetwork;
       Boolean ntstatus= false;
@@ -56,8 +59,9 @@ public class Home extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        topnews = getActivity().findViewById(R.id.topnews);
+//        topnews = getActivity().findViewById(R.id.topnews);
         frameLayout=getActivity().findViewById(R.id.framelayout);
+
         if(Checknetwork.getConnectivityStatusString(getContext())){
             ntstatus=true;
         }else{
@@ -70,6 +74,7 @@ public class Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         apiInterface= ApiClient.getApiClient().create(ApiInterface.class);
+
         View view= inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView=(RecyclerView) view.findViewById(R.id.recyclerview);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
@@ -77,6 +82,7 @@ public class Home extends Fragment {
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
+
         try {
             swipeRefreshLayout.post(new Runnable() {
 

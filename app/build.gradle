@@ -61,4 +61,6 @@ dependencies {
 
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
     implementation 'com.airbnb.android:lottie:3.4.1'
+
+    implementation 'com.rishabhharit.roundedimageview:RoundedImageView:0.8.4'
 }
