@@ -1,7 +1,7 @@
 package com.aditya.news.models;
 
-public class Article {
-    public Source source;
+public class notificationmodel {
+    public String source;
     public String author;
     public String title;
     public String description;
@@ -9,23 +9,30 @@ public class Article {
     public String urlToImage;
     public String publishedAt;
     public String content;
+    public String position;
 
-//    public Article() {
-//    }
-//
+    public notificationmodel(String position, String source, String title, String publishedAt, String urlToImage, String url) {
+        this.position = position;
+        this.source = source;
+        this.title = title;
+        this.url = url;
+        this.urlToImage = urlToImage;
+        this.publishedAt = publishedAt;
+    }
 
-//    public Article(Source source, String title, String urlToImage, String publishedAt) {
-//        this.source = source;
-//        this.title = title;
-//        this.urlToImage = urlToImage;
-//        this.publishedAt = publishedAt;
-//    }
+    public String getPosition() {
+        return position;
+    }
 
-    public Source getSource() {
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getSource() {
         return source;
     }
 
-    public void setSource(Source source) {
+    public void setSource(String source) {
         this.source = source;
     }
 
@@ -84,4 +91,5 @@ public class Article {
     public void setContent(String content) {
         this.content = content;
     }
+
 }

@@ -1,5 +1,6 @@
 package com.aditya.news.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -40,13 +41,14 @@ public class NewsBusinessAdapter extends RecyclerView.Adapter<NewsBusinessAdapte
     @NonNull
     @Override
     public NewsBusinessAdapter.BusinessviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(context).inflate(R.layout.latest,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.latest, parent, false);
         return new NewsBusinessAdapter.BusinessviewHolder(view);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(@NonNull NewsBusinessAdapter.BusinessviewHolder holder, int position) {
-        Article model=articles.get(position);
+        Article model = articles.get(position);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
         requestOptions.centerCrop();
@@ -75,13 +77,13 @@ public class NewsBusinessAdapter extends RecyclerView.Adapter<NewsBusinessAdapte
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(context, NewsDetail.class);
-                i.putExtra("title",model.getSource().getName());
-                i.putExtra("headline",model.getTitle());
-                i.putExtra("date",NewsDetail.DateFormat(model.getPublishedAt()));
-                i.putExtra("time",NewsDetail.DateToTimeFormat(model.getPublishedAt()));
-                i.putExtra("image",model.getUrlToImage());
-                i.putExtra("url",model.getUrl());
+                Intent i = new Intent(context, NewsDetail.class);
+                i.putExtra("title", model.getSource().getName());
+                i.putExtra("headline", model.getTitle());
+                i.putExtra("date", NewsDetail.DateFormat(model.getPublishedAt()));
+                i.putExtra("time", NewsDetail.DateToTimeFormat(model.getPublishedAt()));
+                i.putExtra("image", model.getUrlToImage());
+                i.putExtra("url", model.getUrl());
                 context.startActivity(i);
             }
         });
@@ -95,18 +97,19 @@ public class NewsBusinessAdapter extends RecyclerView.Adapter<NewsBusinessAdapte
     }
 
     public class BusinessviewHolder extends RecyclerView.ViewHolder {
-        TextView latest_source, title, description, author, published_at,time;
+        TextView latest_source, title, description, author, published_at, time;
         ImageView imageView;
         ProgressBar progressBar;
         CardView cardView;
+
         public BusinessviewHolder(@NonNull View itemView) {
             super(itemView);
-            latest_source=itemView.findViewById(R.id.latest_source);
-            cardView=itemView.findViewById(R.id.cardviewlatest);
-            title=itemView.findViewById(R.id.latest_title);
-            progressBar=itemView.findViewById(R.id.progressbar_latest);
-            imageView=itemView.findViewById(R.id.imageViewlatest);
-            time=itemView.findViewById(R.id.time_latest);
+            latest_source = itemView.findViewById(R.id.latest_source);
+            cardView = itemView.findViewById(R.id.cardviewlatest);
+            title = itemView.findViewById(R.id.latest_title);
+            progressBar = itemView.findViewById(R.id.progressbar_latest);
+            imageView = itemView.findViewById(R.id.imageViewlatest);
+            time = itemView.findViewById(R.id.time_latest);
         }
     }
 }

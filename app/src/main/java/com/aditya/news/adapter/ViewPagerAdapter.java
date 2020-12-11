@@ -16,7 +16,8 @@ import com.aditya.news.fragment.Worlds;
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     private int tabcount;
     private Context mcontext;
-//    public ViewPagerAdapter(@NonNull FragmentManager fm) {
+
+    //    public ViewPagerAdapter(@NonNull FragmentManager fm) {
 //        super(fm);
 //    }
 //
@@ -27,15 +28,21 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         super(fm);
         mcontext = context;
     }
+
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        switch (position){
-            case 0:return new Latest();
-            case 1:return new Worlds();
-            case 2:return new Business();
-            case 3:return new Technology();
-            default: return null;
+        switch (position) {
+            case 0:
+                return new Latest();
+            case 1:
+                return new Worlds();
+            case 2:
+                return new Business();
+            case 3:
+                return new Technology();
+            default:
+                return null;
 
         }
 
@@ -51,15 +58,15 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        String title=null;
-        if(position==0){
-            title="Latest";
-        }else if(position ==1){
-            title="Worlds";
-        }else if(position ==2){
-            title="Business";
+        String title = null;
+        if (position == 0) {
+            title = "Latest";
+        } else if (position == 1) {
+            title = "Worlds";
+        } else if (position == 2) {
+            title = "Business";
         } else {
-            title="Technology";
+            title = "Technology";
         }
         return title;
     }

@@ -5,15 +5,15 @@ import android.content.Context;
 
 import com.aditya.news.connection.Checknetwork;
 
+import java.io.File;
+import java.security.cert.CertificateException;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
-import java.io.File;
-import java.security.cert.CertificateException;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -24,22 +24,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
 public class ApiClient {
+    public static final String BASE_URl_localhost = "https://newsapi.org/v2/";
+    public static final String apikey = "4ca6efcfa26a4eb4bf883068e1058ddb";
+    //    public static final String BASE_URl_infinitywebhost ="http://travelas.infinityfreeapp.com/TravelAs/users/";
+    public static Retrofit retrofit = null;
     static Context context;
-    public static final String BASE_URl_localhost ="https://newsapi.org/v2/";
-    public static final String apikey="4ca6efcfa26a4eb4bf883068e1058ddb";
-//    public static final String BASE_URl_infinitywebhost ="http://travelas.infinityfreeapp.com/TravelAs/users/";
-    public static Retrofit retrofit=null;
     static Cache cache;
+
     public static void init(Activity activity) {
-        context=activity;
+        context = activity;
         File cacheFile = new File(activity.getApplicationContext().getCacheDir().getAbsolutePath(), "HttpCache");
         int cacheSize = 10 * 1024 * 1024;
         cache = new Cache(cacheFile, cacheSize);
     }
-     public static Retrofit getApiClient(){
-         Timber.plant(new Timber.DebugTree());
-         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(message -> Timber.i(message));
-         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+    public static Retrofit getApiClient() {
+        Timber.plant(new Timber.DebugTree());
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(message -> Timber.i(message));
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
 
 //        OkHttpClient.Builder okhttp= new OkHttpClient.Builder();
@@ -51,16 +53,18 @@ public class ApiClient {
 //           return chain.proceed( newrequest.build());
 //            }
 //        });
-        if(retrofit == null){
-            retrofit=new Retrofit.Builder().baseUrl(BASE_URl_localhost).client(getUnsafeOkHttpClient().cache(cache).addInterceptor(httpLoggingInterceptor)
-                    .addInterceptor(chain ->{
-                        Request request=chain.request();
-                         if(Checknetwork.getConnectivityStatusString(context)) {
-                             request.newBuilder().header("Cache-control", "public, max-age=" + 5).build();
-                         }
-                         else{
-                             request.newBuilder().header("Cache-control", "public, only-if-cached, max-stale=" + 60*60*24*7).build();
-                         }
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder().baseUrl(BASE_URl_localhost).client(getUnsafeOkHttpClient().cache(cache).addInterceptor(httpLoggingInterceptor)
+                    .addNetworkInterceptor(chain -> {
+                                Request request = chain.request();
+                                if (Checknetwork.getConnectivityStatusString(context)) {
+//                             request.newBuilder().cacheControl(new CacheControl.Builder().onlyIfCached()
+//                                     .maxAge(0, TimeUnit.SECONDS)
+//                                     .build()).build();
+                                    request.newBuilder().header("Cache-control", "public, max-age=" + 60 * 60 * 24 * 28).build();
+                                } else {
+                                    request.newBuilder().header("Cache-control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 28).build();
+                                }
                                 return chain.proceed(request);
                             }
                     )
@@ -68,15 +72,15 @@ public class ApiClient {
         }
         return retrofit;
 
-     }
+    }
 
-    public static OkHttpClient.Builder getUnsafeOkHttpClient(){
+    public static OkHttpClient.Builder getUnsafeOkHttpClient() {
         try {
             // Create a trust manager that does not validate certificate chains
             final TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
                         @Override
-                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType ) throws CertificateException {
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
                         }
 
                         @Override

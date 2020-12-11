@@ -4,9 +4,9 @@ import java.util.List;
 
 public class NewsModel {
 
-private String status;
-private int totalResults;
-private List<Article> articles;
+    private String status;
+    private int totalResults;
+    private List<Article> articles;
 
     public NewsModel() {
     }

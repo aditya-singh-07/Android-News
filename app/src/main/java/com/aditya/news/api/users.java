@@ -9,13 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 public class users {
-    @SerializedName("status")
-    private String status;
-    @SerializedName("totalResults")
-    private int totalResults;
-    @SerializedName("articles")
-    private List<Article> articles;
-
     @SerializedName("source")
     public Source source;
     @SerializedName("author")
@@ -32,7 +25,12 @@ public class users {
     public Date publishedAt;
     @SerializedName("content")
     public String content;
-
+    @SerializedName("status")
+    private String status;
+    @SerializedName("totalResults")
+    private int totalResults;
+    @SerializedName("articles")
+    private List<Article> articles;
     @SerializedName("id")
     private String id;
     @SerializedName("name")

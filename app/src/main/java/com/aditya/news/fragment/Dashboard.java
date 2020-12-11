@@ -1,15 +1,14 @@
 package com.aditya.news.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.aditya.news.R;
 import com.aditya.news.adapter.ViewPagerAdapter;
@@ -21,9 +20,10 @@ import java.util.List;
 
 public class Dashboard extends Fragment {
     TabLayout tabLayout;
-    TabItem tablatest,tabworlds,tabbusiness,tabtechnology;
+    TabItem tablatest, tabworlds, tabbusiness, tabtechnology;
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
+
     public Dashboard() {
         // Required empty public constructor
     }
@@ -32,18 +32,18 @@ public class Dashboard extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tabLayout=getActivity().findViewById(R.id.tablayout);
-        viewPager=getActivity().findViewById(R.id.viewpager);
-        tablatest=getActivity().findViewById(R.id.latest);
-        tabworlds=getActivity().findViewById(R.id.worlds);
-        tabbusiness=getActivity().findViewById(R.id.Business);
-        tabtechnology=getActivity().findViewById(R.id.Technology);
+        tabLayout = getActivity().findViewById(R.id.tablayout);
+        viewPager = getActivity().findViewById(R.id.viewpager);
+        tablatest = getActivity().findViewById(R.id.latest);
+        tabworlds = getActivity().findViewById(R.id.worlds);
+        tabbusiness = getActivity().findViewById(R.id.Business);
+        tabtechnology = getActivity().findViewById(R.id.Technology);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_dashboard, container, false);
+        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 //        ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getContext(),getActivity().getSupportFragmentManager());
 //        viewPager.setAdapter(viewPagerAdapter);
 //        tabLayout.setupWithViewPager(viewPager);
@@ -71,7 +71,7 @@ public class Dashboard extends Fragment {
 //
 //            }
 //        });
-        return  view;
+        return view;
     }
 
 

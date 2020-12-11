@@ -1,24 +1,21 @@
 package com.aditya.news;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.android.material.appbar.AppBarLayout;
 
 import org.ocpsoft.prettytime.PrettyTime;
@@ -28,17 +25,47 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class NewsDetail extends AppCompatActivity{
+public class NewsDetail extends AppCompatActivity {
+    ProgressBar progressBar;
+    WebView webView;
+    ProgressDialog pd;
     private ImageView imageView;
     private TextView appbartitle, appbar_date, time, title;
     private boolean isHideToolbarView = false;
     private FrameLayout framelayoutdate;
     private AppBarLayout appBarLayout;
     private Toolbar toolbar;
-    ProgressBar progressBar;
     private String news_url, news_img, news_title, news_date, source, s_author;
-    WebView webView;
-   ProgressDialog pd;
+
+    public static String DateToTimeFormat(String stringdatetime) {
+        PrettyTime pretty = new PrettyTime(new Locale("DEFAULT"));
+        String time = null;
+        try {
+            SimpleDateFormat simpledate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
+                    Locale.getDefault());
+            Date date = simpledate.parse(stringdatetime);
+            time = pretty.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return time;
+    }
+
+    public static String DateFormat(String oldstringDate) {
+        String newDate;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("E, d MMM yyyy", new Locale("DEFAULT"));
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(oldstringDate);
+            newDate = dateFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            newDate = oldstringDate;
+        }
+
+        return newDate;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,13 +83,13 @@ public class NewsDetail extends AppCompatActivity{
 //        appbar_date = findViewById(R.id.date);
 //        time = findViewById(R.id.time);
 //        title = findViewById(R.id.title);
-        progressBar=findViewById(R.id.progress_bar);
+        progressBar = findViewById(R.id.progress_bar);
 //       pd = ProgressDialog.show(this, "", "Loading...",true);
-        String newstitle=getIntent().getStringExtra("title");
-        String newsheadline=getIntent().getStringExtra("headline");
-        String newsdate=getIntent().getStringExtra("date");
-        String newstime=getIntent().getStringExtra("time");
-        String url=getIntent().getStringExtra("url");
+        String newstitle = getIntent().getStringExtra("title");
+        String newsheadline = getIntent().getStringExtra("headline");
+        String newsdate = getIntent().getStringExtra("date");
+        String newstime = getIntent().getStringExtra("time");
+        String url = getIntent().getStringExtra("url");
         getSupportActionBar().setTitle(newstitle);
 //        title.setText(newsheadline);
 //        time.setText(newstime);
@@ -116,7 +143,7 @@ public class NewsDetail extends AppCompatActivity{
 //                .into(imageView);
 //
 //    }
-    private void WebView(String url){
+    private void WebView(String url) {
         webView = findViewById(R.id.webView);
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -128,13 +155,12 @@ public class NewsDetail extends AppCompatActivity{
         webView.setWebViewClient(new WebViewClient());
         webView.getSettings().setDefaultFontSize(16);
         webView.getSettings().setSupportMultipleWindows(true);
-        webView.setWebViewClient( new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                if(progressBar!=null && progressBar.isAnimating())
-                {
+                if (progressBar != null && progressBar.isAnimating()) {
                     progressBar.setVisibility(View.INVISIBLE);
                 }
             }
@@ -161,45 +187,17 @@ public class NewsDetail extends AppCompatActivity{
 
     }
 
-
-    public static String DateToTimeFormat(String stringdatetime){
-        PrettyTime pretty = new PrettyTime(new Locale("DEFAULT"));
-        String time = null;
-        try {
-            SimpleDateFormat simpledate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
-                    Locale.getDefault());
-            Date date = simpledate.parse(stringdatetime);
-            time = pretty.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return time;
-    }
-
-    public static String DateFormat(String oldstringDate){
-        String newDate;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("E, d MMM yyyy", new Locale("DEFAULT"));
-        try {
-            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(oldstringDate);
-            newDate = dateFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            newDate = oldstringDate;
-        }
-
-        return newDate;
-    }
     @Override
     public void onBackPressed() {
-        if(webView.canGoBack()){
-           webView.goBack();
-        }else{
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
             super.onBackPressed();
             supportFinishAfterTransition();
         }
 
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
