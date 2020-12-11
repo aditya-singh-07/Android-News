@@ -92,7 +92,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "position->" + model.getPosition(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "position->" + model.getPosition(), Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(context, NewsDetail.class);
                 i.putExtra("title", model.getSource());
                 i.putExtra("headline", model.getTitle());

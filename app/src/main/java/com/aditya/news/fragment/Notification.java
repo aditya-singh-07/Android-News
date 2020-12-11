@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,9 +27,12 @@ import java.util.List;
 
 public class Notification extends Fragment {
     RecyclerView recyclerView;
-    List<notificationmodel> articles;
+    List<notificationmodel> articles = new ArrayList<>();;
     NotificationAdapter adapter;
     ImageView bitmapimage;
+    TextView empty;
+
+
 
     public Notification() {
         // Required empty public constructor
@@ -45,6 +49,8 @@ public class Notification extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
         recyclerView = view.findViewById(R.id.notificationrecyclerview);
+        empty=view.findViewById(R.id.empty);
+
         // Inflate the layout for this fragment
         String filename = "tempdata";
 
@@ -61,7 +67,7 @@ public class Notification extends Fragment {
         File[] listOfFiles = folder.listFiles();
 
         if (listOfFiles.length > 0) {
-            articles = new ArrayList<>();
+
             for (int i = 0; i < listOfFiles.length; i++) {
                 if (listOfFiles[i].isFile()) {
                     FileReader fileReader = null;
@@ -84,6 +90,7 @@ public class Notification extends Fragment {
                             articles.add(new notificationmodel(jsonObject.get("position").toString(), jsonObject.get("title").toString(), jsonObject.get("headline").toString(), jsonObject.get("time").toString(), jsonObject.get("image").toString(), jsonObject.get("url").toString()));
                             System.out.println(jsonObject.get("title").toString());
                             System.out.println(jsonObject.get("image").toString());
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -93,6 +100,7 @@ public class Notification extends Fragment {
 
                 }
             }
+            ondatarefresh();
             adapter = new NotificationAdapter(articles, getContext());
             recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
@@ -132,4 +140,15 @@ public class Notification extends Fragment {
 
         return view;
     }
+
+    private void ondatarefresh() {
+        if(articles.size()<=0){
+            empty.setVisibility(View.VISIBLE);
+            adapter.notifyDataSetChanged();
+
+        }else{
+            empty.setVisibility(View.INVISIBLE);
+        }
+    }
+
 }

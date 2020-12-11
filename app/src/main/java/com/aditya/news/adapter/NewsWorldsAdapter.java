@@ -42,6 +42,7 @@ public class NewsWorldsAdapter extends RecyclerView.Adapter<NewsWorldsAdapter.Wo
     @Override
     public NewsWorldsAdapter.Worldviewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.latest, parent, false);
+
         return new NewsWorldsAdapter.Worldviewholder(view);
     }
 
@@ -87,6 +88,7 @@ public class NewsWorldsAdapter extends RecyclerView.Adapter<NewsWorldsAdapter.Wo
                 context.startActivity(i);
             }
         });
+
 
 
     }
